@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+<div class="page-head"><h1>Users</h1></div>
+
+<% if (error) { %><p class="alert alert-error"><%= error %></p><% } %>
+
+<section class="panel">
+  <h2>Create a user</h2>
+  <p class="muted">Limited users can only add their own costs and receipts on projects they are assigned to. Link each limited user to a professional record.</p>
+  <form method="post" action="/users" class="form-grid">
+    <label>Username
+      <input type="text" name="username" required>
+    </label>
+    <label>Email
+      <input type="email" name="email">
+    </label>
+    <label>Password
+      <input type="password" name="password" minlength="8" required>
+    </label>
+    <label>Role
+      <select name="role" id="role-select">
+        <option value="limited">limited</option>
+        <option value="owner">owner</option>
+      </select>
+    </label>
+    <label class="span-2">Linked professional (limited users only)
+      <select name="professional_id">
+        <option value="">— none —</option>
+        <% professionals.forEach(function(pro) { %>
+          <option value="<%= pro.id %>"><%= pro.name %><%= pro.trade ? ' — ' + pro.trade : '' %></option>
+        <% }); %>
+      </select>
+    </label>
+    <div class="span-2"><button type="submit" class="btn btn-primary">Create user</button></div>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>All users</h2>
+  <div class="table-scroll">
+    <table class="data">
+      <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Linked professional</th><th>Reset password</th><th></th></tr></thead>
+      <tbody>
+        <% users.forEach(function(u) { %>
+        <tr>
+          <td><%= u.username %></td>
+          <td><%= u.email || '—' %></td>
+          <td><span class="pill"><%= u.role %></span></td>
+          <td><%= u.professional_name || '—' %></td>
+          <td>
+            <form method="post" action="/users/<%= u.id %>/password" class="row-form">
+              <input type="password" name="password" placeholder="New password" minlength="8" required>
+              <button class="btn btn-tiny btn-secondary">Set</button>
+            </form>
+          </td>
+          <td>
+            <% if (u.id !== currentUser.id) { %>
+              <form method="post" action="/users/<%= u.id %>/delete" class="inline" data-confirm="Delete user <%= u.username %>?">
+                <button class="btn btn-tiny btn-ghost">Delete</button>
+              </form>
+            <% } else { %>
+              <span class="muted">you</span>
+            <% } %>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include('../partials/footer') %>

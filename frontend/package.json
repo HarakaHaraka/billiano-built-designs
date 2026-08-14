@@ -1,0 +1,17 @@
+{
+  "name": "billiano-built-designs-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public marketing site for Billiano Built Designs — Sustainable Building Services & Energy Design.",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./public/assets/app.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./public/assets/app.css --watch",
+    "dev": "npm run watch"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "placeholder-1",
+    "placeholder": true,
+    "title": "PLACEHOLDER: project title",
+    "workType": "PLACEHOLDER: work type",
+    "outcome": "PLACEHOLDER: outcome — what was delivered and the result for the client.",
+    "photo": ""
+  },
+  {
+    "id": "placeholder-2",
+    "placeholder": true,
+    "title": "PLACEHOLDER: project title",
+    "workType": "PLACEHOLDER: work type",
+    "outcome": "PLACEHOLDER: outcome — what was delivered and the result for the client.",
+    "photo": ""
+  },
+  {
+    "id": "placeholder-3",
+    "placeholder": true,
+    "title": "PLACEHOLDER: project title",
+    "workType": "PLACEHOLDER: work type",
+    "outcome": "PLACEHOLDER: outcome — what was delivered and the result for the client.",
+    "photo": ""
+  }
+]

@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<div class="page-head"><h1>My projects</h1></div>
+<p class="muted">Projects you are assigned to. Open one to add your inventory, labour and expenditure costs with receipts.</p>
+
+<% if (projects.length === 0) { %>
+  <div class="panel"><p class="muted">You have not been assigned to any projects yet.</p></div>
+<% } else { %>
+<div class="card-grid">
+  <% projects.forEach(function(p) { %>
+  <a class="project-card" href="/my/projects/<%= p.id %>">
+    <h2><%= p.name %></h2>
+    <p class="muted"><%= p.work_type || 'No work type' %></p>
+    <span class="pill"><%= p.status || 'n/a' %></span>
+  </a>
+  <% }); %>
+</div>
+<% } %>
+<%- include('../partials/footer') %>

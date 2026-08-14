@@ -1,0 +1,128 @@
+<%- include('../partials/header') %>
+<div class="page-head">
+  <div>
+    <a class="crumb" href="/dashboard">← Projects</a>
+    <h1><%= project.name %></h1>
+    <p class="muted">
+      <%= project.client || 'No client' %> · <%= project.work_type || 'No work type' %> ·
+      <span class="pill"><%= project.status || 'n/a' %></span>
+    </p>
+  </div>
+  <div class="head-actions">
+    <a class="btn btn-ghost" href="/projects/<%= project.id %>/edit">Edit</a>
+    <form method="post" action="/projects/<%= project.id %>/delete" class="inline" data-confirm="Delete this project and all its data?">
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+  </div>
+</div>
+
+<section class="summary-grid">
+  <div class="stat"><span class="stat-label">Quote to client</span><span class="stat-value"><%= gbp(fin.quote) %></span></div>
+  <div class="stat"><span class="stat-label">Cost to company</span><span class="stat-value"><%= gbp(fin.cost) %></span></div>
+  <div class="stat"><span class="stat-label">Expenditures</span><span class="stat-value"><%= gbp(fin.spent) %></span></div>
+  <div class="stat"><span class="stat-label">Commission</span><span class="stat-value"><%= gbp(fin.commission) %></span></div>
+  <div class="stat stat-accent"><span class="stat-label">Margin (quote − cost − spent)</span><span class="stat-value <%= fin.margin < 0 ? 'neg' : 'pos' %>"><%= gbp(fin.margin) %></span></div>
+</section>
+
+<% if (project.notes) { %>
+<div class="panel"><h2>Notes</h2><p><%= project.notes %></p></div>
+<% } %>
+
+<div class="cols">
+  <section class="panel">
+    <h2>Assigned professionals</h2>
+    <% if (assigned.length === 0) { %>
+      <p class="muted">No professionals assigned yet.</p>
+    <% } else { %>
+      <ul class="plain-list">
+        <% assigned.forEach(function(pro) { %>
+          <li>
+            <span><strong><%= pro.name %></strong> <span class="muted"><%= pro.trade || '' %></span></span>
+            <form method="post" action="/assignments/<%= pro.assignment_id %>/delete" class="inline" data-confirm="Unassign <%= pro.name %>?">
+              <button class="btn btn-tiny btn-ghost">Unassign</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+
+    <% if (unassigned.length > 0) { %>
+    <form method="post" action="/projects/<%= project.id %>/assign" class="row-form">
+      <select name="professional_id" required>
+        <option value="">Assign a professional…</option>
+        <% unassigned.forEach(function(pro) { %>
+          <option value="<%= pro.id %>"><%= pro.name %><%= pro.trade ? ' — ' + pro.trade : '' %></option>
+        <% }); %>
+      </select>
+      <button type="submit" class="btn btn-secondary">Assign</button>
+    </form>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <h2>Add expenditure</h2>
+    <% if (assigned.length === 0) { %>
+      <p class="muted">Assign a professional first to record an expenditure.</p>
+    <% } else { %>
+    <form method="post" action="/projects/<%= project.id %>/expenditures" enctype="multipart/form-data" class="stack">
+      <label>Professional
+        <select name="professional_id" required>
+          <% assigned.forEach(function(pro) { %>
+            <option value="<%= pro.id %>"><%= pro.name %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label>Category
+        <select name="category" required>
+          <option value="labour">Labour</option>
+          <option value="inventory">Inventory</option>
+          <option value="expenditure">Expenditure</option>
+        </select>
+      </label>
+      <label>Amount (£)
+        <input type="number" step="0.01" name="amount" required>
+      </label>
+      <label>Description
+        <input type="text" name="description">
+      </label>
+      <label>Receipt (image or PDF)
+        <input type="file" name="receipt" accept="image/*,application/pdf">
+      </label>
+      <button type="submit" class="btn btn-primary">Add expenditure</button>
+    </form>
+    <% } %>
+  </section>
+</div>
+
+<section class="panel">
+  <h2>All expenditures</h2>
+  <% if (expenditures.length === 0) { %>
+    <p class="muted">No expenditures recorded.</p>
+  <% } else { %>
+  <div class="table-scroll">
+    <table class="data">
+      <thead>
+        <tr><th>Date</th><th>Professional</th><th>Category</th><th>Description</th><th class="num">Amount</th><th>Receipt</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% expenditures.forEach(function(e) { %>
+        <tr>
+          <td><%= e.created_at %></td>
+          <td><%= e.professional_name %></td>
+          <td><span class="pill pill-<%= e.category %>"><%= e.category %></span></td>
+          <td><%= e.description || '—' %></td>
+          <td class="num"><%= gbp(e.amount) %></td>
+          <td><% if (e.receipt_path) { %><a href="/receipts/<%= e.id %>" target="_blank" rel="noopener">View</a><% } else { %>—<% } %></td>
+          <td>
+            <form method="post" action="/expenditures/<%= e.id %>/delete" class="inline" data-confirm="Delete this expenditure?">
+              <button class="btn btn-tiny btn-ghost">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

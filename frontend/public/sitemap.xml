@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sitemap for billianobuiltdesigns.co.uk
+  NOTE: the internal "Identity & tokens" design-system page is intentionally
+  absent — it must never be public.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://billianobuiltdesigns.co.uk/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://billianobuiltdesigns.co.uk/heat-pumps</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://billianobuiltdesigns.co.uk/retrofit</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://billianobuiltdesigns.co.uk/portfolio</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://billianobuiltdesigns.co.uk/accreditations</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://billianobuiltdesigns.co.uk/public-sector</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>

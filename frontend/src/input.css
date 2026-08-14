@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Billiano Built Designs — base layer.
+ * Clean near-white background, generous white space, one clear focus per page.
+ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight text-pine;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-terracotta ring-offset-2 ring-offset-paper;
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-terracotta text-white shadow-card hover:bg-terracotta-600 active:bg-terracotta-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-pine/20 bg-surface text-pine hover:border-pine/40 hover:bg-pine-50;
+  }
+
+  .btn-ghost {
+    @apply btn text-pine hover:bg-pine-50;
+  }
+
+  .nav-link {
+    @apply rounded-full px-3.5 py-2 text-sm font-medium text-muted hover:bg-pine-50 hover:text-pine;
+  }
+
+  .nav-link[aria-current='page'] {
+    @apply bg-pine-50 text-pine;
+  }
+
+  .card {
+    @apply rounded-xl2 border border-pine/10 bg-surface p-6 shadow-card;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-sage-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-pine-700;
+  }
+
+  .prose-block {
+    @apply space-y-4 text-base leading-relaxed text-muted;
+  }
+
+  .prose-block p {
+    @apply text-muted;
+  }
+
+  /* Honesty-rule placeholder marker — deliberately unmissable */
+  .placeholder {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-dashed border-terracotta-400 bg-terracotta-50 px-2 py-0.5 text-sm font-medium text-terracotta-700;
+  }
+
+  .placeholder::before {
+    content: '⚑';
+    @apply text-terracotta-500;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+
+  .status-held {
+    @apply bg-pine-100 text-pine-700;
+  }
+
+  .status-progress {
+    @apply bg-terracotta-100 text-terracotta-700;
+  }
+
+  .status-planned {
+    @apply bg-sage-100 text-sage-700;
+  }
+
+  .status-partner {
+    @apply bg-pine-50 text-pine-600 ring-1 ring-inset ring-pine-200;
+  }
+}

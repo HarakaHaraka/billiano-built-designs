@@ -1,0 +1,40 @@
+# Netlify build configuration for Billiano Built Designs (public frontend).
+# The frontend is a static SPA; Tailwind is compiled at build time.
+# Production branch = main. Every push to main auto-deploys — no drag-and-drop.
+
+[build]
+  # Run the build inside the frontend package.
+  base = "frontend"
+  command = "npm run build"
+  # Publish directory, relative to `base`. Contains index.html + generated assets.
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ---------------------------------------------------------------------------
+# SPA routing: serve index.html for client-side routes. Netlify checks for a
+# matching static file FIRST (assets, /data/*.json, sitemap, favicon), so only
+# unmatched paths fall through to the app shell. Netlify Forms intercepts POSTs
+# before redirects, so the enquiry form still works.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ---------------------------------------------------------------------------
+# Security + caching headers
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

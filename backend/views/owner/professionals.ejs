@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+<div class="page-head"><h1>Professionals</h1></div>
+
+<% if (error) { %><p class="alert alert-error"><%= error %></p><% } %>
+
+<section class="panel">
+  <h2>Add a professional</h2>
+  <form method="post" action="/professionals" class="row-form wrap-form">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="trade" placeholder="Trade (e.g. electrician)">
+    <input type="text" name="certifications" placeholder="Certifications">
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>All professionals</h2>
+  <% if (professionals.length === 0) { %>
+    <p class="muted">None yet.</p>
+  <% } else { %>
+    <ul class="edit-list">
+      <% professionals.forEach(function(pro) { %>
+      <li class="edit-row">
+        <form method="post" action="/professionals/<%= pro.id %>" class="row-form wrap-form grow">
+          <input type="text" name="name" value="<%= pro.name %>" required>
+          <input type="text" name="trade" value="<%= pro.trade || '' %>" placeholder="Trade">
+          <input type="text" name="certifications" value="<%= pro.certifications || '' %>" placeholder="Certifications">
+          <button class="btn btn-tiny btn-secondary">Save</button>
+        </form>
+        <form method="post" action="/professionals/<%= pro.id %>/delete" class="inline" data-confirm="Delete <%= pro.name %>?">
+          <button class="btn btn-tiny btn-ghost">Delete</button>
+        </form>
+      </li>
+      <% }); %>
+    </ul>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

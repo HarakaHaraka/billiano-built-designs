@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Billiano Built Designs — Sustainable Building Services &amp; Energy Design</title>
+    <meta
+      name="description"
+      content="Billiano Built Designs — Sustainable Building Services & Energy Design. Heat pumps, retrofit and energy design for domestic and public-sector clients."
+    />
+    <meta name="theme-color" content="#24463A" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://billianobuiltdesigns.co.uk/" />
+
+    <!-- Fonts: Caprasimo (display wordmark) + Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/app.css" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Billiano Built Designs" />
+    <meta property="og:description" content="Sustainable Building Services & Energy Design" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://billianobuiltdesigns.co.uk/" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-pine focus:px-4 focus:py-2 focus:text-white"
+      >Skip to content</a
+    >
+
+    <!--
+      Netlify Forms detection form. This static markup is what Netlify parses at
+      build time to register the "enquiry" form. It is visually hidden; the live
+      form in the enquiry panel submits to it via fetch. Do not remove.
+    -->
+    <form name="enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="enquiry" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <textarea name="message"></textarea>
+    </form>
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="sticky top-0 z-40 border-b border-pine/10 bg-paper/85 backdrop-blur">
+      <div class="container-content flex items-center justify-between gap-4 py-3.5">
+        <a href="/" data-link class="group flex items-center gap-3">
+          <span
+            class="grid h-10 w-10 place-items-center rounded-xl2 bg-pine text-lg font-display text-white shadow-card"
+            aria-hidden="true"
+            >B</span
+          >
+          <span class="leading-tight">
+            <span class="block font-display text-lg text-pine">Billiano Built Designs</span>
+            <span class="block text-[11px] font-medium uppercase tracking-wider text-muted"
+              >Sustainable Building Services &amp; Energy Design</span
+            >
+          </span>
+        </a>
+
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="Primary" data-nav></nav>
+
+        <div class="flex items-center gap-2">
+          <button type="button" class="btn-primary hidden sm:inline-flex" data-enquiry-open>
+            Send an enquiry
+          </button>
+          <button
+            type="button"
+            class="btn-ghost lg:hidden"
+            data-menu-toggle
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile nav -->
+      <nav
+        id="mobile-nav"
+        class="container-content hidden flex-col gap-1 pb-4 lg:hidden"
+        aria-label="Mobile"
+        data-mobile-nav
+      ></nav>
+    </header>
+
+    <!-- ===================== MAIN OUTLET ===================== -->
+    <main id="main" class="flex-1" data-outlet>
+      <!-- Views render here. Content is populated by /assets/app.js -->
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="mt-16 border-t border-pine/10 bg-pine-50/60">
+      <div class="container-content grid gap-10 py-12 md:grid-cols-3">
+        <div>
+          <div class="flex items-center gap-3">
+            <span
+              class="grid h-9 w-9 place-items-center rounded-xl2 bg-pine text-base font-display text-white"
+              aria-hidden="true"
+              >B</span
+            >
+            <span class="font-display text-lg text-pine">Billiano Built Designs</span>
+          </div>
+          <p class="mt-3 max-w-xs text-sm text-muted">
+            Sustainable Building Services &amp; Energy Design. Heat pumps, retrofit and energy design
+            delivered with transparent credentials.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-pine">Explore</h3>
+          <nav class="mt-3 flex flex-col gap-2 text-sm" aria-label="Footer" data-footer-nav></nav>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-pine">Get in touch</h3>
+          <ul class="mt-3 space-y-2 text-sm text-muted">
+            <li>
+              <a class="hover:text-pine" href="mailto:enquiries@billianobuiltdesigns.co.uk"
+                >enquiries@billianobuiltdesigns.co.uk</a
+              >
+            </li>
+            <li>
+              <a class="hover:text-pine" href="mailto:Executive@billianobuiltdesigns.co.uk"
+                >Executive@billianobuiltdesigns.co.uk</a
+              >
+            </li>
+            <li><a class="hover:text-pine" href="tel:+447849549740">07849 549740</a></li>
+          </ul>
+          <button type="button" class="btn-primary mt-4" data-enquiry-open>Send an enquiry</button>
+        </div>
+      </div>
+      <div class="border-t border-pine/10">
+        <div
+          class="container-content flex flex-col items-start justify-between gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center"
+        >
+          <p>&copy; <span data-year></span> Billiano Built Designs Ltd. All rights reserved.</p>
+          <p>
+            Company number:
+            <span class="placeholder">PLACEHOLDER: company number</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ===================== ENQUIRY PANEL ===================== -->
+    <div
+      class="fixed inset-0 z-50 hidden"
+      data-enquiry-panel
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="enquiry-title"
+    >
+      <div class="absolute inset-0 bg-ink/40 backdrop-blur-sm" data-enquiry-close></div>
+      <div
+        class="absolute right-0 top-0 flex h-full w-full max-w-md flex-col overflow-y-auto bg-surface shadow-panel"
+      >
+        <div class="flex items-center justify-between border-b border-pine/10 px-6 py-5">
+          <h2 id="enquiry-title" class="font-display text-xl text-pine">Send an enquiry</h2>
+          <button type="button" class="btn-ghost -mr-2 px-3 py-2" data-enquiry-close>
+            <span class="sr-only">Close</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-6 px-6 py-6">
+          <p class="text-sm text-muted">
+            The quickest way to reach us is by email. Choose the right inbox below, or use the form if
+            your device has no mail client.
+          </p>
+
+          <div class="space-y-3">
+            <a
+              href="mailto:enquiries@billianobuiltdesigns.co.uk"
+              class="flex items-start gap-3 rounded-xl2 border border-pine/15 p-4 hover:border-pine/40 hover:bg-pine-50"
+            >
+              <span class="mt-0.5 text-terracotta" aria-hidden="true">✉</span>
+              <span>
+                <span class="block text-sm font-semibold text-pine">General enquiries</span>
+                <span class="block text-sm text-muted">enquiries@billianobuiltdesigns.co.uk</span>
+              </span>
+            </a>
+            <a
+              href="mailto:Executive@billianobuiltdesigns.co.uk"
+              class="flex items-start gap-3 rounded-xl2 border border-pine/15 p-4 hover:border-pine/40 hover:bg-pine-50"
+            >
+              <span class="mt-0.5 text-terracotta" aria-hidden="true">★</span>
+              <span>
+                <span class="block text-sm font-semibold text-pine">Direct to the executive</span>
+                <span class="block text-sm text-muted">Executive@billianobuiltdesigns.co.uk</span>
+              </span>
+            </a>
+            <a
+              href="tel:+447849549740"
+              class="flex items-start gap-3 rounded-xl2 border border-pine/15 p-4 hover:border-pine/40 hover:bg-pine-50"
+            >
+              <span class="mt-0.5 text-terracotta" aria-hidden="true">☎</span>
+              <span>
+                <span class="block text-sm font-semibold text-pine">Call us</span>
+                <span class="block text-sm text-muted">07849 549740</span>
+              </span>
+            </a>
+          </div>
+
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-pine/10"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-surface px-3 text-xs uppercase tracking-wider text-muted">or send a message</span>
+            </div>
+          </div>
+
+          <!-- Live enquiry form (submits to the Netlify "enquiry" form via fetch) -->
+          <form class="space-y-4" data-enquiry-form>
+            <input type="hidden" name="form-name" value="enquiry" />
+            <p class="hidden">
+              <label>Leave this field empty: <input name="bot-field" /></label>
+            </p>
+            <div>
+              <label class="block text-sm font-medium text-pine" for="f-name">Name</label>
+              <input
+                id="f-name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                class="mt-1 w-full rounded-xl border border-pine/20 bg-paper px-3 py-2.5 text-sm text-ink focus:border-pine focus:bg-surface"
+              />
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label class="block text-sm font-medium text-pine" for="f-email">Email</label>
+                <input
+                  id="f-email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  class="mt-1 w-full rounded-xl border border-pine/20 bg-paper px-3 py-2.5 text-sm text-ink focus:border-pine focus:bg-surface"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-pine" for="f-phone">Phone (optional)</label>
+                <input
+                  id="f-phone"
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  class="mt-1 w-full rounded-xl border border-pine/20 bg-paper px-3 py-2.5 text-sm text-ink focus:border-pine focus:bg-surface"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-pine" for="f-subject">Subject</label>
+              <input
+                id="f-subject"
+                name="subject"
+                type="text"
+                class="mt-1 w-full rounded-xl border border-pine/20 bg-paper px-3 py-2.5 text-sm text-ink focus:border-pine focus:bg-surface"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-pine" for="f-message">Message</label>
+              <textarea
+                id="f-message"
+                name="message"
+                rows="4"
+                required
+                class="mt-1 w-full rounded-xl border border-pine/20 bg-paper px-3 py-2.5 text-sm text-ink focus:border-pine focus:bg-surface"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full">Send message</button>
+            <p class="text-center text-sm" data-enquiry-status role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>

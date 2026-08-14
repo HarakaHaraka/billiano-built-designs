@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== 'undefined' ? title : 'Billiano Admin' %> · Billiano Built Designs</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">Billiano</span>
+      <span class="brand-sub">Built Designs · Admin</span>
+    </div>
+    <% if (currentUser) { %>
+      <nav class="topnav">
+        <% if (currentUser.role === 'owner') { %>
+          <a href="/dashboard">Projects</a>
+          <a href="/professionals">Professionals</a>
+          <a href="/users">Users</a>
+        <% } else { %>
+          <a href="/my">My projects</a>
+        <% } %>
+        <span class="who"><%= currentUser.username %> (<%= currentUser.role %>)</span>
+        <form method="post" action="/logout" class="inline">
+          <button type="submit" class="btn btn-ghost">Log out</button>
+        </form>
+      </nav>
+    <% } %>
+  </header>
+  <main class="wrap">

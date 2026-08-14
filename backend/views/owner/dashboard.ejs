@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+<div class="page-head">
+  <h1>Projects</h1>
+  <a class="btn btn-primary" href="/projects/new">+ New project</a>
+</div>
+
+<section class="summary-grid">
+  <div class="stat"><span class="stat-label">Total quoted</span><span class="stat-value"><%= gbp(totals.quote) %></span></div>
+  <div class="stat"><span class="stat-label">Company cost</span><span class="stat-value"><%= gbp(totals.cost) %></span></div>
+  <div class="stat"><span class="stat-label">Spent (expenditures)</span><span class="stat-value"><%= gbp(totals.spent) %></span></div>
+  <div class="stat"><span class="stat-label">Commission</span><span class="stat-value"><%= gbp(totals.commission) %></span></div>
+  <div class="stat stat-accent"><span class="stat-label">Net margin</span><span class="stat-value"><%= gbp(totals.margin) %></span></div>
+</section>
+
+<% if (projects.length === 0) { %>
+  <div class="panel"><p class="muted">No projects yet. Create your first project to begin.</p></div>
+<% } else { %>
+<div class="table-scroll">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Project</th><th>Client</th><th>Work type</th><th>Status</th>
+        <th class="num">Quote</th><th class="num">Cost</th><th class="num">Spent</th>
+        <th class="num">Commission</th><th class="num">Margin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% projects.forEach(function(p) { %>
+      <tr>
+        <td><a href="/projects/<%= p.id %>"><%= p.name %></a></td>
+        <td><%= p.client || '—' %></td>
+        <td><%= p.work_type || '—' %></td>
+        <td><span class="pill"><%= p.status || 'n/a' %></span></td>
+        <td class="num"><%= gbp(p.quote) %></td>
+        <td class="num"><%= gbp(p.cost) %></td>
+        <td class="num"><%= gbp(p.spent) %></td>
+        <td class="num"><%= gbp(p.commission) %></td>
+        <td class="num <%= p.margin < 0 ? 'neg' : 'pos' %>"><%= gbp(p.margin) %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } %>
+<%- include('../partials/footer') %>

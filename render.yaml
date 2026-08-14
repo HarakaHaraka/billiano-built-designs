@@ -1,0 +1,41 @@
+# Render Blueprint for the Billiano Built Designs admin backend.
+# This is the ONLY file for the backend that lives outside backend/.
+#
+# IMPORTANT: SQLite and uploaded receipts must live on the persistent disk mounted
+# below (at /var/data). Both DATABASE_PATH and UPLOAD_DIR point inside that mount so
+# data and receipts survive every redeploy. Without the disk they would be wiped on
+# each deploy.
+services:
+  - type: web
+    name: billiano-admin
+    runtime: node
+    rootDir: backend
+    plan: starter          # a paid plan is required for a persistent disk
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: billiano-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Session signing secret — generated once by Render, kept secret.
+      - key: SESSION_SECRET
+        generateValue: true
+      # SQLite database file, inside the persistent disk mount.
+      - key: DATABASE_PATH
+        value: /var/data/billiano.db
+      # Uploaded receipts directory, inside the persistent disk mount.
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      # Owner seed credentials — set these yourself in the Render dashboard.
+      # After first deploy, run `npm run seed` once (Render Shell) to create the owner.
+      - key: OWNER_USERNAME
+        sync: false
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false

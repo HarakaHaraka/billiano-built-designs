@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+<div class="page-head">
+  <h1><%= project ? 'Edit project' : 'New project' %></h1>
+  <a class="btn btn-ghost" href="<%= project ? '/projects/' + project.id : '/dashboard' %>">Cancel</a>
+</div>
+
+<% if (error) { %><p class="alert alert-error"><%= error %></p><% } %>
+
+<form method="post" action="<%= project ? '/projects/' + project.id : '/projects' %>" class="panel form-grid">
+  <label class="span-2">Name
+    <input type="text" name="name" required value="<%= project ? project.name : '' %>">
+  </label>
+  <label>Client
+    <input type="text" name="client" value="<%= project && project.client ? project.client : '' %>">
+  </label>
+  <label>Work type
+    <input type="text" name="work_type" value="<%= project && project.work_type ? project.work_type : '' %>">
+  </label>
+  <label>Status
+    <input type="text" name="status" placeholder="e.g. quoted, in progress, complete" value="<%= project && project.status ? project.status : '' %>">
+  </label>
+  <label>Start date
+    <input type="date" name="start_date" value="<%= project && project.start_date ? project.start_date : '' %>">
+  </label>
+  <label>End date
+    <input type="date" name="end_date" value="<%= project && project.end_date ? project.end_date : '' %>">
+  </label>
+  <label>Cost to company (£)
+    <input type="number" step="0.01" name="cost_to_company" value="<%= project ? project.cost_to_company : 0 %>">
+  </label>
+  <label>Quote to client (£)
+    <input type="number" step="0.01" name="quote_to_client" value="<%= project ? project.quote_to_client : 0 %>">
+  </label>
+  <label>Commission to company (£)
+    <input type="number" step="0.01" name="commission_to_company" value="<%= project ? project.commission_to_company : 0 %>">
+  </label>
+  <label class="span-2">Notes
+    <textarea name="notes" rows="4"><%= project && project.notes ? project.notes : '' %></textarea>
+  </label>
+  <div class="span-2">
+    <button type="submit" class="btn btn-primary"><%= project ? 'Save changes' : 'Create project' %></button>
+  </div>
+</form>
+<%- include('../partials/footer') %>

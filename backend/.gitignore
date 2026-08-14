@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit real env files
+.env
+
+# SQLite database + WAL files (persisted on Render's disk, not in git)
+data/
+
+# Uploaded receipts — keep the folder, ignore its contents
+uploads/*
+!uploads/.gitkeep
+
+# Logs / OS cruft
+*.log
+.DS_Store
