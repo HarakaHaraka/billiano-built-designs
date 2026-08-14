@@ -1,0 +1,10 @@
+{
+  "_readme": "Home-page hero background rotation. Put image files in /assets/legacy/ and list them in the 'images' array below — the hero picks them up automatically, crossfading every 6 seconds (static for reduced-motion users). While 'images' is empty the hero shows the brand gradient instead. The '_staged' entries match the owner's four collected photos: move each one into 'images' as soon as its file exists in frontend/public/assets/legacy/, or the page would request missing files.",
+  "images": [],
+  "_staged": [
+    { "src": "/assets/legacy/hero-solar-roof.jpg", "alt": "Solar PV array installed on a terracotta tiled roof" },
+    { "src": "/assets/legacy/hero-heat-pumps.jpg", "alt": "Air-source heat pump units mounted on a building exterior" },
+    { "src": "/assets/legacy/hero-solar-terrace.jpg", "alt": "Terraced homes with full-roof solar panels" },
+    { "src": "/assets/legacy/hero-atrium.jpg", "alt": "Naturally lit atrium with stack ventilation architecture" }
+  ]
+}

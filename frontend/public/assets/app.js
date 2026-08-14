@@ -1,12 +1,14 @@
 /*
  * Billiano Built Designs — public site application.
  * Lightweight SPA: instant client-side routing (History API), no full-page reloads.
- * All page content lives here as render functions; the portfolio reads from
- * /data/projects.json so entries can be added without touching layout.
+ * Page content lives here as render functions; the portfolio reads from
+ * /data/projects.json, the home hero rotation from /data/hero.json, and the
+ * legal pages from markdown files in /content/docs/ — so all three update
+ * without touching layout code.
  *
  * HONESTY RULE: nothing is presented as a real accreditation, insurance, project,
  * testimonial, statistic or client unless confirmed in the build brief. Everything
- * else is a clearly marked [PLACEHOLDER]. See ph() / phBlock() helpers.
+ * else is a clearly marked [PLACEHOLDER]. See ph() / tc() helpers.
  */
 
 const BRAND = {
@@ -15,7 +17,8 @@ const BRAND = {
   emailGeneral: 'enquiries@billianobuiltdesigns.co.uk',
   emailExec: 'Executive@billianobuiltdesigns.co.uk',
   phone: '07849 549740',
-  phoneHref: '+447849549740'
+  phoneHref: '+447849549740',
+  whatsapp: 'https://wa.me/447943569024'
 };
 
 /* ----------------------------- small helpers ----------------------------- */
@@ -31,6 +34,7 @@ const enquiryCta = (label = 'Send an enquiry') =>
 const execCta = () =>
   `<a class="btn-secondary" href="mailto:${BRAND.emailExec}">Email the executive</a>`;
 
+// Standard page hero (inner pages — clean canvas, no imagery)
 const hero = ({ eyebrow, title, lead, actions }) => `
   <section class="relative overflow-hidden">
     <div class="container-content grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.1fr_.9fr]">
@@ -109,17 +113,109 @@ const featureList = (items) => `
       .join('')}
   </ul>`;
 
+/* ----------------------- accreditation register data ---------------------- */
+/*
+ * Colour-coded, filterable register (addendum §3):
+ *   GREEN  = Attained · AMBER = In progress / near completion · GREY = Planned.
+ * Partner-held entries are kept from the approved four-status structure.
+ * HONESTY RULE: nothing shows Attained unless genuinely awarded.
+ */
+const REGISTER_STATUSES = {
+  attained: { label: 'Attained', pill: 'status-attained', dot: 'bg-emerald-500' },
+  progress: { label: 'In progress', pill: 'status-progress', dot: 'bg-amber-500' },
+  planned: { label: 'Planned', pill: 'status-planned', dot: 'bg-stone-400' },
+  partner: { label: 'Partner-held', pill: 'status-partner', dot: 'bg-sage-500' }
+};
+
+const REGISTER = [
+  { status: 'attained', name: 'BEng (Hons) Mechanical Engineering', note: 'Verified qualification' },
+  { status: 'attained', name: 'PG Cert Sustainable Engineering', note: 'Verified qualification' },
+  { status: 'progress', name: 'ICO registration', note: 'Confirming imminently' },
+  {
+    status: 'progress',
+    name: 'Insurances (public liability · professional indemnity · employers’)',
+    note: 'Being purchased — see the table below'
+  },
+  { status: 'planned', name: ph('planned accreditation(s) — confirm names before listing'), note: '' },
+  { status: 'partner', name: ph('partner-held accreditation(s) and partner name(s)'), note: '' }
+];
+
+const registerListHtml = (filter) => {
+  const rows = REGISTER.filter((r) => filter === 'all' || r.status === filter);
+  if (!rows.length) {
+    return `<p class="py-8 text-center text-sm text-muted">Nothing in this category yet — honestly.</p>`;
+  }
+  return rows
+    .map((r) => {
+      const meta = REGISTER_STATUSES[r.status];
+      return `
+        <li class="flex flex-col gap-2 border-b border-pine/10 py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-3">
+            <span class="status-pill ${meta.pill}">${meta.label}</span>
+            <span class="text-sm font-medium text-ink">${r.name}</span>
+          </div>
+          ${r.note ? `<span class="text-sm text-muted">${r.note}</span>` : ''}
+        </li>`;
+    })
+    .join('');
+};
+
+const registerTabsHtml = (active) => {
+  const tabs = [
+    ['all', 'All', 'bg-pine', 'reg-tab-all'],
+    ['attained', 'Attained', 'bg-emerald-500', 'reg-tab-attained'],
+    ['progress', 'In progress', 'bg-amber-500', 'reg-tab-progress'],
+    ['planned', 'Planned', 'bg-stone-400', 'reg-tab-planned'],
+    ['partner', 'Partner-held', 'bg-sage-500', 'reg-tab-partner']
+  ];
+  return tabs
+    .map(
+      ([key, label, dot, cls]) => `
+      <button type="button" class="reg-tab ${cls}${key === active ? ' is-active' : ''}"
+        data-reg-filter="${key}" aria-pressed="${key === active}">
+        <span class="reg-dot ${dot}" aria-hidden="true"></span>${label}
+      </button>`
+    )
+    .join('');
+};
+
 /* --------------------------------- views --------------------------------- */
 
 const views = {
   home: () => `
-    ${hero({
-      eyebrow: 'Sustainable building services',
-      title: 'Sustainable Building Services &amp; Energy Design',
-      lead:
-        'Billiano Built Designs delivers heat pumps, retrofit and low-carbon energy design for homes and public-sector clients — engineered properly, and evidenced honestly.',
-      actions: `${enquiryCta()} <a class="btn-secondary" href="/portfolio" data-link>View our work</a>`
-    })}
+    <!-- Full-viewport hero canvas (addendum §1). Imagery rotates via /data/hero.json;
+         while no images are supplied, a brand gradient stands in. Rotation applies to
+         the BACKGROUND only — content never moves without a click. -->
+    <section class="relative isolate flex min-h-[600px] min-h-[88svh] overflow-hidden bg-pine-800">
+      <div class="absolute inset-0 -z-20" data-hero-stage aria-hidden="true">
+        <div class="absolute inset-0 bg-gradient-to-br from-pine-600 via-pine-800 to-ink"></div>
+        <div class="absolute -left-24 top-1/4 h-96 w-96 rounded-full bg-sage-500/20 blur-3xl"></div>
+        <div class="absolute -right-16 bottom-1/4 h-80 w-80 rounded-full bg-terracotta-500/15 blur-3xl"></div>
+      </div>
+      <!-- Dark gradient scrim keeps headline text legible over any image -->
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/25" aria-hidden="true"></div>
+
+      <div class="container-content relative flex flex-col justify-center py-20">
+        <span class="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur">
+          Sustainable building services
+        </span>
+        <h1 class="mt-5 max-w-3xl text-4xl leading-[1.04] text-white sm:text-6xl">
+          Sustainable Building Services &amp; Energy Design
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-pine-50/95">
+          Heat pumps, retrofit and low-carbon energy design for homes and public-sector clients —
+          engineered properly, and evidenced honestly.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          ${enquiryCta('Get a quote')}
+          <a class="btn border border-white/40 text-white hover:bg-white/10" href="/portfolio" data-link>View our work</a>
+        </div>
+        <p class="mt-10 text-sm text-pine-100/90">
+          BEng (Hons) Mechanical Engineering · PG Cert Sustainable Engineering ·
+          <a href="/accreditations" data-link class="underline decoration-white/40 underline-offset-4 hover:text-white">credentials published honestly</a>
+        </p>
+      </div>
+    </section>
 
     ${section({
       eyebrow: 'What we do',
@@ -152,18 +248,18 @@ const views = {
       eyebrow: 'Credentials you can check',
       title: 'Honest by default',
       lead:
-        'We publish a live accreditation register showing exactly what is held, in progress, planned and partner-held — because a false claim is worse than an honest gap.',
+        'We publish a live accreditation register showing exactly what is attained, in progress, planned and partner-held — because a false claim is worse than an honest gap.',
       body: `
         <div class="grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
           <div class="card">
-            <h3 class="text-lg">Held today</h3>
+            <h3 class="text-lg">On the register today</h3>
             <ul class="mt-4 space-y-3 text-sm">
               <li class="flex items-center gap-3">
-                <span class="status-pill status-held">Held</span>
+                <span class="status-pill status-attained">Attained</span>
                 BEng (Hons) Mechanical Engineering
               </li>
               <li class="flex items-center gap-3">
-                <span class="status-pill status-held">Held</span>
+                <span class="status-pill status-attained">Attained</span>
                 PG Cert Sustainable Engineering
               </li>
               <li class="flex items-center gap-3">
@@ -283,7 +379,7 @@ const views = {
             accreditation once it is actually held. Any specific retrofit scheme membership is shown on
             the register with its true status.
           </p>
-          <p class="mt-4">${ph('retrofit scheme accreditation (e.g. PAS 2035 / TrustMark) — confirm status before listing as held')}</p>
+          <p class="mt-4">${ph('retrofit scheme accreditation (e.g. PAS 2035 / TrustMark) — confirm status before listing as attained')}</p>
           <a href="/accreditations" data-link class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-terracotta">
             View the accreditation register <span aria-hidden="true">→</span>
           </a>
@@ -292,15 +388,6 @@ const views = {
   `,
 
   accreditations: () => {
-    const registerRow = (statusPill, name, note) => `
-      <li class="flex flex-col gap-2 border-b border-pine/10 py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-          ${statusPill}
-          <span class="text-sm font-medium text-ink">${name}</span>
-        </div>
-        ${note ? `<span class="text-sm text-muted">${note}</span>` : ''}
-      </li>`;
-
     const insuranceRow = (type) => `
       <tr class="border-b border-pine/10 last:border-0">
         <td class="py-3 pr-4 text-sm font-medium text-ink">${type}</td>
@@ -314,40 +401,22 @@ const views = {
       eyebrow: 'Transparency',
       title: 'Accreditation register',
       lead:
-        'A live, honest record of our credentials — held, in progress, planned and partner-held. We would rather show an honest gap than a false claim.',
+        'A live, honest record of our credentials — attained, in progress, planned and partner-held. We would rather show an honest gap than a false claim.',
       actions: `${enquiryCta()} <a class="btn-secondary" href="/public-sector" data-link>For public-sector buyers</a>`
     })}
 
     ${section({
-      title: 'The four-status register',
-      lead: 'Every credential below sits in one of four clearly labelled states.',
+      title: 'The register',
+      lead:
+        'Colour-coded and filterable: green = attained, amber = in progress or near completion, grey = planned. Nothing shows “Attained” unless genuinely awarded.',
       body: `
-        <div class="grid gap-5 lg:grid-cols-2">
-          <div class="card">
-            <div class="flex items-center gap-2"><span class="status-pill status-held">Held</span><h3 class="text-lg">Currently held</h3></div>
-            <ul class="mt-3">
-              ${registerRow('<span class="status-pill status-held">Held</span>', 'BEng (Hons) Mechanical Engineering', 'Verified qualification')}
-              ${registerRow('<span class="status-pill status-held">Held</span>', 'PG Cert Sustainable Engineering', 'Verified qualification')}
-            </ul>
+        <div class="card">
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter register by status" data-reg-tabs>
+            ${registerTabsHtml('all')}
           </div>
-          <div class="card">
-            <div class="flex items-center gap-2"><span class="status-pill status-progress">In progress</span><h3 class="text-lg">Being obtained</h3></div>
-            <ul class="mt-3">
-              ${registerRow('<span class="status-pill status-progress">In progress</span>', 'ICO registration', 'Confirming imminently')}
-            </ul>
-          </div>
-          <div class="card">
-            <div class="flex items-center gap-2"><span class="status-pill status-planned">Planned</span><h3 class="text-lg">Planned</h3></div>
-            <ul class="mt-3">
-              ${registerRow('<span class="status-pill status-planned">Planned</span>', ph('planned accreditation(s) — confirm names before listing'), '')}
-            </ul>
-          </div>
-          <div class="card">
-            <div class="flex items-center gap-2"><span class="status-pill status-partner">Partner-held</span><h3 class="text-lg">Held by delivery partners</h3></div>
-            <ul class="mt-3">
-              ${registerRow('<span class="status-pill status-partner">Partner-held</span>', ph('partner-held accreditation(s) and partner name(s)'), '')}
-            </ul>
-          </div>
+          <ul class="mt-4" data-register-list>
+            ${registerListHtml('all')}
+          </ul>
         </div>`
     })}
 
@@ -406,7 +475,7 @@ const views = {
       lead:
         'A single false accreditation claim can permanently disqualify a supplier from public tenders. We treat honesty as a compliance feature, not just a value.',
       body: featureList([
-        'A live accreditation register — held, in progress, planned, partner-held',
+        'A live accreditation register — attained, in progress, planned, partner-held',
         'Chartered-track engineering leadership (BEng Hons; PG Cert)',
         'Clear, auditable documentation for every design decision',
         'Insurances being put in place, shown transparently as they are confirmed',
@@ -467,6 +536,19 @@ const views = {
     })}
   `,
 
+  // Company documents (Terms / Privacy / Complaints) rendered from markdown in
+  // /content/docs/ so the owner can update text without touching layout code.
+  docPage: (route) => `
+    <section class="container-content py-12 sm:py-16">
+      <div class="max-w-3xl">
+        <span class="eyebrow">Company document</span>
+        <article class="prose-doc mt-6" data-doc-target data-doc-file="${route.file}">
+          <p class="text-sm text-muted">Loading document…</p>
+        </article>
+      </div>
+    </section>
+  `,
+
   notFound: () => `
     ${section({
       eyebrow: '404',
@@ -485,10 +567,49 @@ const routes = [
   { path: '/retrofit', label: 'Retrofit', title: `Retrofit — ${BRAND.name}`, view: 'retrofit', nav: true },
   { path: '/portfolio', label: 'Portfolio', title: `Portfolio — ${BRAND.name}`, view: 'portfolio', nav: true },
   { path: '/accreditations', label: 'Accreditations', title: `Accreditations — ${BRAND.name}`, view: 'accreditations', nav: true },
-  { path: '/public-sector', label: 'Public sector', title: `Public sector — ${BRAND.name}`, view: 'publicSector', nav: true }
+  { path: '/public-sector', label: 'Public sector', title: `Public sector — ${BRAND.name}`, view: 'publicSector', nav: true },
+  { path: '/terms', label: 'Terms of Service', title: `Terms of Service — ${BRAND.name}`, view: 'docPage', legal: true, file: 'terms-of-service.md' },
+  { path: '/privacy', label: 'Privacy Notice', title: `Privacy Notice — ${BRAND.name}`, view: 'docPage', legal: true, file: 'privacy-notice.md' },
+  { path: '/complaints', label: 'Complaints Procedure', title: `Complaints Procedure — ${BRAND.name}`, view: 'docPage', legal: true, file: 'complaints-procedure.md' }
 ];
 
 const routeFor = (path) => routes.find((r) => r.path === path);
+
+/* ------------------------------ hero rotation ----------------------------- */
+
+let heroTimer = null;
+
+async function initHeroRotation() {
+  const stage = document.querySelector('[data-hero-stage]');
+  if (!stage) return;
+  try {
+    const res = await fetch('/data/hero.json', { cache: 'no-cache' });
+    if (!res.ok) return; // keep gradient fallback
+    const cfg = await res.json();
+    const images = Array.isArray(cfg.images) ? cfg.images.filter((i) => i && i.src) : [];
+    if (!images.length) return; // no imagery supplied yet — gradient fallback stays
+
+    // Build the crossfade layers (background only — content never rotates).
+    stage.innerHTML = images
+      .map(
+        (img, i) =>
+          `<div class="hero-layer${i === 0 ? ' is-active' : ''}" style="background-image:url('${img.src}')"></div>`
+      )
+      .join('');
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || images.length < 2) return; // static first image for reduced-motion users
+
+    const layers = Array.from(stage.querySelectorAll('.hero-layer'));
+    let idx = 0;
+    heroTimer = setInterval(() => {
+      idx = (idx + 1) % layers.length;
+      layers.forEach((l, i) => l.classList.toggle('is-active', i === idx));
+    }, 6000);
+  } catch {
+    /* gradient fallback stays */
+  }
+}
 
 /* ------------------------------ portfolio data --------------------------- */
 
@@ -531,17 +652,102 @@ async function renderPortfolio() {
   }
 }
 
+/* ------------------------- markdown document pages ------------------------ */
+
+// Minimal markdown → HTML for the /content/docs/ files (headings, bold, italic,
+// links, unordered lists, paragraphs). [PLACEHOLDER: …] markers keep their
+// unmissable flag styling per the honesty rule.
+function mdToHtml(md) {
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const inline = (s) =>
+    esc(s)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(/\[PLACEHOLDER:\s*([^\]]+)\]/g, '<span class="placeholder">PLACEHOLDER: $1</span>')
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  const lines = md.split(/\r?\n/);
+  const out = [];
+  let list = null;
+  let para = [];
+
+  const flushPara = () => {
+    if (para.length) {
+      out.push(`<p>${inline(para.join(' '))}</p>`);
+      para = [];
+    }
+  };
+  const flushList = () => {
+    if (list) {
+      out.push(`<ul>${list.map((li) => `<li>${inline(li)}</li>`).join('')}</ul>`);
+      list = null;
+    }
+  };
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    const h = line.match(/^(#{1,3})\s+(.*)$/);
+    if (h) {
+      flushPara();
+      flushList();
+      out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`);
+      continue;
+    }
+    if (/^-{3,}$/.test(line.trim())) {
+      flushPara();
+      flushList();
+      out.push('<hr />');
+      continue;
+    }
+    const li = line.match(/^\s*[-*]\s+(.*)$/);
+    if (li) {
+      flushPara();
+      (list = list || []).push(li[1]);
+      continue;
+    }
+    if (!line.trim()) {
+      flushPara();
+      flushList();
+      continue;
+    }
+    flushList();
+    para.push(line.trim());
+  }
+  flushPara();
+  flushList();
+  return out.join('\n');
+}
+
+async function renderDoc(route) {
+  const target = document.querySelector('[data-doc-target]');
+  if (!target) return;
+  try {
+    const res = await fetch(`/content/docs/${route.file}`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    target.innerHTML = mdToHtml(await res.text());
+  } catch (err) {
+    target.innerHTML = `<p class="text-sm text-terracotta-700">Could not load this document (${err.message}).
+      Please email <a class="underline" href="mailto:${BRAND.emailGeneral}">${BRAND.emailGeneral}</a> for a copy.</p>`;
+  }
+}
+
 /* -------------------------------- rendering ------------------------------ */
 
 const outlet = document.querySelector('[data-outlet]');
 
 function render(path) {
+  if (heroTimer) {
+    clearInterval(heroTimer);
+    heroTimer = null;
+  }
   const route = routeFor(path) || { title: `Page not found — ${BRAND.name}`, view: 'notFound' };
   document.title = route.title;
-  outlet.innerHTML = views[route.view]();
+  outlet.innerHTML = views[route.view](route);
   window.scrollTo({ top: 0, behavior: 'auto' });
   updateActiveNav(path);
   if (route.view === 'portfolio') renderPortfolio();
+  if (route.view === 'docPage') renderDoc(route);
+  if (route.view === 'home') initHeroRotation();
   closeMobileMenu();
 }
 
@@ -555,12 +761,14 @@ function navigate(path, replace = false) {
 
 function buildNav() {
   const items = routes.filter((r) => r.nav);
+  const legal = routes.filter((r) => r.legal);
   const linkHtml = (r, cls) =>
     `<a href="${r.path}" data-link class="${cls}" data-path="${r.path}">${r.label}</a>`;
 
   const primary = document.querySelector('[data-nav]');
   const mobile = document.querySelector('[data-mobile-nav]');
   const footer = document.querySelector('[data-footer-nav]');
+  const legalNav = document.querySelector('[data-legal-nav]');
 
   if (primary) primary.innerHTML = items.map((r) => linkHtml(r, 'nav-link')).join('');
   if (mobile)
@@ -568,6 +776,7 @@ function buildNav() {
       items.map((r) => linkHtml(r, 'nav-link block')).join('') +
       `<button type="button" class="btn-primary mt-2 w-full" data-enquiry-open>Send an enquiry</button>`;
   if (footer) footer.innerHTML = items.map((r) => linkHtml(r, 'text-muted hover:text-pine')).join('');
+  if (legalNav) legalNav.innerHTML = legal.map((r) => linkHtml(r, 'text-muted hover:text-pine')).join('');
 }
 
 function updateActiveNav(path) {
@@ -600,7 +809,7 @@ function openEnquiry() {
   lastFocused = document.activeElement;
   panel.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
-  const firstInput = panel.querySelector('a, button, input, textarea');
+  const firstInput = panel.querySelector('input:not([type="hidden"]):not([name="bot-field"]), a, button');
   if (firstInput) firstInput.focus();
 }
 
@@ -609,6 +818,12 @@ function closeEnquiry() {
   if (!panel) return;
   panel.classList.add('hidden');
   document.body.style.overflow = '';
+  // Reset to the form state for the next open.
+  const success = panel.querySelector('[data-enquiry-success]');
+  const body = panel.querySelector('[data-enquiry-body]');
+  if (success) success.classList.add('hidden');
+  if (success) success.classList.remove('flex');
+  if (body) body.classList.remove('hidden');
   if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
 }
 
@@ -632,8 +847,18 @@ async function submitEnquiry(form) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     form.reset();
-    statusEl.innerHTML = 'Thank you — your message has been sent. We will be in touch shortly.';
-    statusEl.className = 'text-center text-sm font-medium text-pine';
+    statusEl.textContent = '';
+    // Confirmation state (addendum §4): swap the panel body for the success view.
+    const panel = document.querySelector('[data-enquiry-panel]');
+    const success = panel.querySelector('[data-enquiry-success]');
+    const body = panel.querySelector('[data-enquiry-body]');
+    if (success && body) {
+      body.classList.add('hidden');
+      success.classList.remove('hidden');
+      success.classList.add('flex');
+      const closeBtn = success.querySelector('button');
+      if (closeBtn) closeBtn.focus();
+    }
   } catch (err) {
     statusEl.innerHTML = `We could not send the form here. Please email us directly at
       <a class="font-semibold text-terracotta underline" href="mailto:${BRAND.emailGeneral}">${BRAND.emailGeneral}</a>.`;
@@ -656,6 +881,19 @@ document.addEventListener('click', (e) => {
       else closeMobileMenu();
       return;
     }
+  }
+
+  // Accreditation register filter tabs
+  const tab = e.target.closest('[data-reg-filter]');
+  if (tab) {
+    const filter = tab.getAttribute('data-reg-filter');
+    const tabsWrap = document.querySelector('[data-reg-tabs]');
+    const listEl = document.querySelector('[data-register-list]');
+    if (tabsWrap && listEl) {
+      tabsWrap.innerHTML = registerTabsHtml(filter);
+      listEl.innerHTML = registerListHtml(filter);
+    }
+    return;
   }
 
   if (e.target.closest('[data-enquiry-open]')) {

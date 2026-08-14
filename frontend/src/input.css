@@ -90,23 +90,118 @@
     @apply text-terracotta-500;
   }
 
+  /* Register status colours (addendum §3): green = attained, amber = in
+     progress / near completion, grey = planned. Partner-held keeps a sage ring. */
   .status-pill {
     @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
   }
 
-  .status-held {
-    @apply bg-pine-100 text-pine-700;
+  .status-attained {
+    @apply bg-emerald-100 text-emerald-800;
   }
 
   .status-progress {
-    @apply bg-terracotta-100 text-terracotta-700;
+    @apply bg-amber-100 text-amber-800;
   }
 
   .status-planned {
-    @apply bg-sage-100 text-sage-700;
+    @apply bg-stone-200 text-stone-600;
   }
 
   .status-partner {
     @apply bg-pine-50 text-pine-600 ring-1 ring-inset ring-pine-200;
+  }
+
+  /* Accreditation register filter tabs */
+  .reg-tab {
+    @apply inline-flex items-center gap-2 rounded-full border border-pine/20 bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-pine/40 hover:text-pine;
+  }
+
+  .reg-tab.is-active {
+    @apply border-transparent text-white;
+  }
+
+  .reg-tab-all.is-active {
+    @apply bg-pine;
+  }
+
+  .reg-tab-attained.is-active {
+    @apply bg-emerald-700;
+  }
+
+  .reg-tab-progress.is-active {
+    @apply bg-amber-600;
+  }
+
+  .reg-tab-planned.is-active {
+    @apply bg-stone-500;
+  }
+
+  .reg-tab-partner.is-active {
+    @apply bg-sage-600;
+  }
+
+  .reg-tab.is-active .reg-dot {
+    @apply bg-white/80;
+  }
+
+  .reg-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+  }
+
+  /* Home hero background rotation — crossfading image layers behind a scrim */
+  .hero-layer {
+    @apply absolute inset-0 bg-cover bg-center opacity-0;
+    transition: opacity 1.5s ease-in-out;
+  }
+
+  .hero-layer.is-active {
+    @apply opacity-100;
+  }
+
+  /* Floating action bubbles (bottom-right, persistent, unobtrusive) */
+  .fab {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-panel transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .fab-whatsapp {
+    @apply bg-[#1FAF54] hover:bg-[#178F44];
+  }
+
+  .fab-enquire {
+    @apply bg-terracotta hover:bg-terracotta-600;
+  }
+
+  /* Company documents (Terms / Privacy / Complaints) rendered from markdown */
+  .prose-doc h1 {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  .prose-doc h2 {
+    @apply mt-9 text-xl;
+  }
+
+  .prose-doc h3 {
+    @apply mt-6 text-lg;
+  }
+
+  .prose-doc p {
+    @apply mt-4 text-[15px] leading-relaxed text-muted;
+  }
+
+  .prose-doc ul {
+    @apply mt-4 list-disc space-y-1.5 pl-5 text-[15px] leading-relaxed text-muted;
+  }
+
+  .prose-doc strong {
+    @apply font-semibold text-ink;
+  }
+
+  .prose-doc a {
+    @apply font-medium text-terracotta underline underline-offset-2;
+  }
+
+  .prose-doc hr {
+    @apply my-8 border-pine/10;
   }
 }
